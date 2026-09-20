@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tempero da Vó 🧄</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f7f1df;
+      color: #3d321f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .card {
+      width: 100%;
+      max-width: 430px;
+      background: #fffdf7;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(80,60,20,.14);
+      text-align: center;
+    }
+    .icon { font-size: 58px; }
+    h1 { margin: 5px 0; font-size: 30px; }
+    .subtitle { margin: 0 0 22px; color: #756548; }
+    .product {
+      background: #f1ead2;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+    .price { font-size: 30px; font-weight: bold; }
+    .weight { margin-top: 5px; color: #756548; }
+    .label { font-weight: bold; margin: 18px 0 10px; }
+    .counter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+    }
+    button {
+      border: 0;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .minus, .plus {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 25px;
+      background: #d9c58d;
+      color: #3d321f;
+    }
+    #quantity { font-size: 28px; font-weight: bold; min-width: 35px; }
+    .result {
+      margin-top: 22px;
+      padding: 18px;
+      background: #faf5e7;
+      border-radius: 16px;
+    }
+    .total { font-size: 28px; font-weight: bold; margin-bottom: 6px; }
+    .whatsapp {
+      width: 100%;
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 14px;
+      background: #25d366;
+      color: white;
+      font-size: 17px;
+    }
+    .whatsapp:hover { filter: brightness(.95); }
+    .note { font-size: 12px; color: #8a7b5d; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="icon">🧄</div>
+    <h1>Tempero da Vó</h1>
+    <p class="subtitle">Tempero de alho caseiro</p>
+
+    <section class="product">
+      <div class="price">R$ 15,00</div>
+      <div class="weight">325 g por pote</div>
+      <div class="weight">Alho • Sal • Óleo</div>
+    </section>
+
+    <div class="label">Quantidade de potes</div>
+    <div class="counter">
+      <button class="minus" onclick="alterar(-1)">−</button>
+      <span id="quantity">1</span>
+      <button class="plus" onclick="alterar(1)">+</button>
+    </div>
+
+    <section class="result">
+      <div class="total" id="total">Total: R$ 15,00</div>
+      <div id="peso">Peso total: 325 g</div>
+    </section>
+
+    <button class="whatsapp" onclick="pedidoWhatsApp()">
+      📱 Fazer pedido pelo WhatsApp
+    </button>
+
+    <div class="note">Produto caseiro • Consulte sua vó para informações de validade e conservação.</div>
+  </main>
+
+  <script>
+    const PRECO = 15;
+    const PESO_POTE = 325;
+    let quantidade = 1;
+
+    function alterar(valor) {
+      quantidade = Math.max(1, quantidade + valor);
+      atualizar();
+    }
+
+    function atualizar() {
+      document.getElementById("quantity").textContent = quantidade;
+
+      const total = quantidade * PRECO;
+      const peso = quantidade * PESO_POTE;
+
+      document.getElementById("total").textContent =
+        "Total: R$ " + total.toFixed(2).replace(".", ",");
+
+      document.getElementById("peso").textContent =
+        "Peso total: " + formatarPeso(peso);
+    }
+
+    function formatarPeso(gramas) {
+      if (gramas >= 1000) {
+        let kg = gramas / 1000;
+        return kg.toLocaleString("pt-BR", { maximumFractionDigits: 3 }) + " kg";
+      }
+      return gramas + " g";
+    }
+
+    function pedidoWhatsApp() {
+      // COLOQUE O NÚMERO DA SUA VÓ AQUI, somente números:
+      // Exemplo: 5511999999999
+      const telefone = "5511999999999";
+
+      const total = (quantidade * PRECO).toFixed(2).replace(".", ",");
+      const peso = formatarPeso(quantidade * PESO_POTE);
+
+      const mensagem =
+        "Olá! Gostaria de pedir " + quantidade +
+        " pote(s) de tempero de alho. " +
+        "Peso total: " + peso +
+        ". Total: R$ " + total + ".";
+
+      window.open(
+        "https://wa.me/" + telefone + "?text=" + encodeURIComponent(mensagem),
+        "_blank"
+      );
+    }
+  </script>
+</body>
+</html>
